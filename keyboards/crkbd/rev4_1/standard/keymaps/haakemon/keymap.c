@@ -158,7 +158,6 @@ bool rgb_matrix_indicators_kb(void) {
     }
 
     return true;
-
 }
 #endif
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
