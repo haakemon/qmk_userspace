@@ -19,6 +19,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 #include "keymap_norwegian.h"
 
+// clang-format off
+enum layers {
+    _BASE,
+    _NAV,
+    _NUM,
+    _SYM,
+    _F
+};
+// clang-format on
+
 // https://fsymbols.com/text-art/
 
 // ░█████╗░░█████╗░███╗░░░███╗██████╗░░█████╗░░██████╗
@@ -27,25 +37,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // ██║░░██╗██║░░██║██║╚██╔╝██║██╔══██╗██║░░██║░╚═══██╗
 // ╚█████╔╝╚█████╔╝██║░╚═╝░██║██████╦╝╚█████╔╝██████╔╝
 // ░╚════╝░░╚════╝░╚═╝░░░░░╚═╝╚═════╝░░╚════╝░╚═════╝░
-
-const uint16_t PROGMEM combo_backslash[] = {KC_R, KC_G, COMBO_END};
-const uint16_t PROGMEM combo_slash[] = {KC_H, KC_U, COMBO_END};
-const uint16_t PROGMEM combo_pipe_l[] = {KC_G, KC_T, COMBO_END};
-const uint16_t PROGMEM combo_pipe_r[] = {KC_H, KC_Y, COMBO_END};
-const uint16_t PROGMEM combo_eql[] = {KC_T, KC_Y, COMBO_END};
-const uint16_t PROGMEM combo_dash[] = {KC_G, KC_H, COMBO_END};
-const uint16_t PROGMEM combo_underscore[] = {KC_B, KC_N, COMBO_END};
+const uint16_t PROGMEM combo_backslash[]   = {KC_R, KC_G, COMBO_END};
+const uint16_t PROGMEM combo_slash[]       = {KC_H, KC_U, COMBO_END};
+const uint16_t PROGMEM combo_pipe_l[]      = {KC_G, KC_T, COMBO_END};
+const uint16_t PROGMEM combo_pipe_r[]      = {KC_H, KC_Y, COMBO_END};
+const uint16_t PROGMEM combo_eql[]         = {KC_T, KC_Y, COMBO_END};
+const uint16_t PROGMEM combo_dash[]        = {KC_G, KC_H, COMBO_END};
+const uint16_t PROGMEM combo_underscore[]  = {KC_B, KC_N, COMBO_END};
 const uint16_t PROGMEM combo_doublequote[] = {NO_QUOT, NO_GRV, COMBO_END};
 
 combo_t key_combos[] = {
-    COMBO(combo_backslash, NO_BSLS),
-    COMBO(combo_slash, NO_SLSH),
-    COMBO(combo_pipe_l, NO_PIPE),
-    COMBO(combo_pipe_r, NO_PIPE),
-    COMBO(combo_eql, NO_EQL),
-    COMBO(combo_dash, NO_MINS),
-    COMBO(combo_underscore, NO_UNDS),
-    COMBO(combo_doublequote, NO_DQUO),
+    COMBO(combo_backslash, NO_BSLS), COMBO(combo_slash, NO_SLSH), COMBO(combo_pipe_l, NO_PIPE), COMBO(combo_pipe_r, NO_PIPE), COMBO(combo_eql, NO_EQL), COMBO(combo_dash, NO_MINS), COMBO(combo_underscore, NO_UNDS), COMBO(combo_doublequote, NO_DQUO),
 };
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
@@ -53,7 +55,6 @@ combo_t key_combos[] = {
 // ╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-
 
 // ███╗░░░███╗░█████╗░██████╗░  ████████╗░█████╗░██████╗░
 // ████╗░████║██╔══██╗██╔══██╗  ╚══██╔══╝██╔══██╗██╔══██╗
@@ -62,40 +63,38 @@ combo_t key_combos[] = {
 // ██║░╚═╝░██║╚█████╔╝██████╔╝  ░░░██║░░░██║░░██║██║░░░░░
 // ╚═╝░░░░░╚═╝░╚════╝░╚═════╝░  ░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░░░░
 // https://getreuer.info/posts/keyboards/triggers/index.html#tap-vs.-long-press
-
 #define XX_CUT LT(0, KC_X)
 #define C_COPY LT(0, KC_C)
 #define V_PASTE LT(0, KC_V)
 #define ESC_F20 LT(0, KC_ESC)
 
 static bool process_tap_or_long_press_key(keyrecord_t* record, uint16_t long_press_keycode) {
-  if (record->tap.count == 0) {  // Key is being held.
-    if (record->event.pressed) {
-      tap_code16(long_press_keycode);
+    if (record->tap.count == 0) { // Key is being held.
+        if (record->event.pressed) {
+            tap_code16(long_press_keycode);
+        }
+        return false; // Skip default handling.
     }
-    return false; // Skip default handling.
-  }
 
-  return true; // Continue default handling.
+    return true; // Continue default handling.
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
-  switch (keycode) {
-    case XX_CUT:
-      return process_tap_or_long_press_key(record, C(KC_X));
+    switch (keycode) {
+        case XX_CUT:
+            return process_tap_or_long_press_key(record, C(KC_X));
 
-    case C_COPY:
-      return process_tap_or_long_press_key(record, C(KC_INS));
+        case C_COPY:
+            return process_tap_or_long_press_key(record, C(KC_INS));
 
-    case V_PASTE:
-      return process_tap_or_long_press_key(record, S(KC_INS));
+        case V_PASTE:
+            return process_tap_or_long_press_key(record, S(KC_INS));
 
-    case ESC_F20:
-      return process_tap_or_long_press_key(record, KC_F20);
+        case ESC_F20:
+            return process_tap_or_long_press_key(record, KC_F20);
+    }
 
-  }
-
-  return true; // Continue default handling.
+    return true; // Continue default handling.
 }
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
@@ -104,28 +103,82 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
+// ██████╗░░██████╗░██████╗░
+// ██╔══██╗██╔════╝░██╔══██╗
+// ██████╔╝██║░░██╗░██████╦╝
+// ██╔══██╗██║░░╚██╗██╔══██╗
+// ██║░░██║╚██████╔╝██████╦╝
+// ╚═╝░░╚═╝░╚═════╝░╚═════╝░
+#ifdef RGB_MATRIX_ENABLE
 
+int get_led_index(int x, int y) {
+    // clang-format off
+    int grid[8][7] = {
+        // left side - left-to-right
+        {18, 17, 12, 11, 4, 3, 21},
+        {19, 16, 13, 10, 5, 2, 22},
+        {20, 15, 14, 9, 6, 1},
+                         {8, 7, 0},
 
+        // right side - right-to-left
+        {41, 40, 35, 34, 27, 26, 44},
+        {42, 39, 36, 33, 28, 25, 45},
+            {43, 38, 37, 32, 29, 24},
+        {31, 30, 23}
+    };
+    // clang-format on
+
+    if (x < 0 || x >= 8) {
+        return -1;
+    }
+    if (y < 0 || y >= sizeof(grid[x]) / sizeof(grid[x][0])) {
+        return -1;
+    }
+
+    return grid[x][y];
+}
+
+bool rgb_matrix_indicators_kb(void) {
+    if (!rgb_matrix_indicators_user()) {
+        return false;
+    }
+
+    // ESC key red if Caps Lock is on
+    if (host_keyboard_led_state().caps_lock) {
+        rgb_matrix_set_color(get_led_index(0, 0), 255, 0, 0);
+    }
+
+    if (layer_state_is(_NAV)) {
+        rgb_matrix_set_color(get_led_index(4, 3), 255, 0, 0);
+        rgb_matrix_set_color(get_led_index(5, 2), 255, 0, 0);
+        rgb_matrix_set_color(get_led_index(5, 3), 255, 0, 0);
+        rgb_matrix_set_color(get_led_index(5, 4), 255, 0, 0);
+        rgb_matrix_set_color(get_led_index(6, 2), 255, 0, 0);
+        rgb_matrix_set_color(get_led_index(6, 4), 255, 0, 0);
+    }
+
+    return true;
+
+}
+#endif
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+// █████╗█████╗█████╗█████╗█████╗█████╗
+// ╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+// clang-format off
 // ██╗░░██╗███████╗██╗░░░██╗███╗░░░███╗░█████╗░██████╗░░██████╗
 // ██║░██╔╝██╔════╝╚██╗░██╔╝████╗░████║██╔══██╗██╔══██╗██╔════╝
 // █████═╝░█████╗░░░╚████╔╝░██╔████╔██║███████║██████╔╝╚█████╗░
 // ██╔═██╗░██╔══╝░░░░╚██╔╝░░██║╚██╔╝██║██╔══██║██╔═══╝░░╚═══██╗
 // ██║░╚██╗███████╗░░░██║░░░██║░╚═╝░██║██║░░██║██║░░░░░██████╔╝
 // ╚═╝░░╚═╝╚══════╝░░░╚═╝░░░╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═════╝░
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     *  You can use _______ in place for KC_TRNS (transparent)   *
     *  Or you can use XXXXXXX for KC_NO (NOOP)                  *
     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-enum layers {
-    _BASE,
-    _NAV,
-    _NUM,
-    _SYM,
-    _F
-};
-
 #define LGUI_A LGUI_T(KC_A)
 #define LALT_S LALT_T(KC_S)
 #define LSHT_D LSFT_T(KC_D)
@@ -219,3 +272,4 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // ╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+// clang-format on
