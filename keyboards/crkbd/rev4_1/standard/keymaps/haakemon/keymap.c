@@ -146,15 +146,24 @@ bool rgb_matrix_indicators_kb(void) {
     // ESC key red if Caps Lock is on
     if (host_keyboard_led_state().caps_lock) {
         rgb_matrix_set_color(get_led_index(0, 0), 255, 0, 0);
+    } else {
+        rgb_matrix_set_color(get_led_index(0, 0), 0, 0, 0);
     }
 
     if (layer_state_is(_NAV)) {
-        rgb_matrix_set_color(get_led_index(4, 3), 255, 0, 0);
-        rgb_matrix_set_color(get_led_index(5, 2), 255, 0, 0);
-        rgb_matrix_set_color(get_led_index(5, 3), 255, 0, 0);
-        rgb_matrix_set_color(get_led_index(5, 4), 255, 0, 0);
-        rgb_matrix_set_color(get_led_index(6, 2), 255, 0, 0);
-        rgb_matrix_set_color(get_led_index(6, 4), 255, 0, 0);
+        rgb_matrix_set_color(get_led_index(4, 3), RGB_GOLDENROD);
+        rgb_matrix_set_color(get_led_index(5, 2), RGB_GOLDENROD);
+        rgb_matrix_set_color(get_led_index(5, 3), RGB_GOLDENROD);
+        rgb_matrix_set_color(get_led_index(5, 4), RGB_GOLDENROD);
+        rgb_matrix_set_color(get_led_index(6, 2), RGB_GOLDENROD);
+        rgb_matrix_set_color(get_led_index(6, 4), RGB_GOLDENROD);
+    } else {
+        rgb_matrix_set_color(get_led_index(4, 3), 0, 0, 0);
+        rgb_matrix_set_color(get_led_index(5, 2), 0, 0, 0);
+        rgb_matrix_set_color(get_led_index(5, 3), 0, 0, 0);
+        rgb_matrix_set_color(get_led_index(5, 4), 0, 0, 0);
+        rgb_matrix_set_color(get_led_index(6, 2), 0, 0, 0);
+        rgb_matrix_set_color(get_led_index(6, 4), 0, 0, 0);
     }
 
     return true;
